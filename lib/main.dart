@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -14,8 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.red,
-        title: const Text("E-Commerce App"),
+        title: const Text(
+          "E-Commerce App",
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
               onPressed: () {},
@@ -101,6 +106,29 @@ class MyApp extends StatelessWidget {
           ),
         ]),
       ),
+      body: Column(children: [
+        FlutterCarousel(
+          options: CarouselOptions(
+            enlargeCenterPage: true,
+            height: 300.0,
+            showIndicator: true,
+            slideIndicator: const CircularSlideIndicator(),
+          ),
+          items: ['m2', 'm2', 'm2', 'm2', 'm2'].map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(
+                    'assets/images/$i.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
+            );
+          }).toList(),
+        ),
+      ]),
     );
   }
 }
