@@ -2,6 +2,8 @@ import 'package:e_commerce_app/components/horizontal_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
+import 'components/products.dart';
+
 void main() {
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -135,6 +137,14 @@ class MyApp extends StatelessWidget {
             child: Text('Categories'),
           ),
           const HorizontalList(),
+          const Padding(
+            padding: EdgeInsets.only(left: 20, top: 15),
+            child: Text('Recent Products'),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Products(),
+          )
         ]),
       ),
     );
