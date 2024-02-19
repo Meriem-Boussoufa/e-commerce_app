@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/components/horizontal_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
@@ -106,29 +107,36 @@ class MyApp extends StatelessWidget {
           ),
         ]),
       ),
-      body: Column(children: [
-        FlutterCarousel(
-          options: CarouselOptions(
-            enlargeCenterPage: true,
-            height: 300.0,
-            showIndicator: true,
-            slideIndicator: const CircularSlideIndicator(),
+      body: SingleChildScrollView(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          FlutterCarousel(
+            options: CarouselOptions(
+              enlargeCenterPage: true,
+              height: 300.0,
+              showIndicator: true,
+              slideIndicator: const CircularSlideIndicator(),
+            ),
+            items: ['m2', 'm2', 'm2', 'm2', 'm2'].map((i) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      'assets/images/$i.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              );
+            }).toList(),
           ),
-          items: ['m2', 'm2', 'm2', 'm2', 'm2'].map((i) {
-            return Builder(
-              builder: (BuildContext context) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.asset(
-                    'assets/images/$i.jpg',
-                    fit: BoxFit.cover,
-                  ),
-                );
-              },
-            );
-          }).toList(),
-        ),
-      ]),
+          const Padding(
+            padding: EdgeInsets.only(left: 20, top: 15),
+            child: Text('Categories'),
+          ),
+          const HorizontalList(),
+        ]),
+      ),
     );
   }
 }
