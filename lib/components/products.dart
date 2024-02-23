@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/pages/cart.dart';
 import 'package:e_commerce_app/pages/product_details.dart';
 import 'package:flutter/material.dart';
 
@@ -134,13 +135,11 @@ class SingleProduct extends StatelessWidget {
           tag: productName,
           child: Material(
             child: InkWell(
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ProductDetails(
-                        productDetailName: productName,
-                        productDetailNewPrice: productPrice,
-                        productDetailOldPrice: productOldPrice,
-                        productDetailPicture: productPicture,
-                      ))),
+              onTap: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const Cart()),
+                    (Route<dynamic> route) => false);
+              },
               child: GridTile(
                   footer: Container(
                     color: Colors.white70,
