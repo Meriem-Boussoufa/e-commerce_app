@@ -11,80 +11,74 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   var productList = [
     {
+      "name": "Dress",
+      "picture": "assets/images/dress2.jpg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Dress",
+      "picture": "assets/images/dress.jpeg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Dress",
+      "picture": "assets/images/dress3.jpeg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Dress",
+      "picture": "assets/images/dress4.jpeg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Shirt",
+      "picture": "assets/images/shirt2.jpg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Shirt",
+      "picture": "assets/images/shirt0.jpeg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Pant",
+      "picture": "assets/images/pant1.jpg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Pant",
+      "picture": "assets/images/pant3.jpg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Pant",
+      "picture": "assets/images/pant2.jpeg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Shoe",
+      "picture": "assets/images/shoe1.jpeg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Shoe",
+      "picture": "assets/images/shoe2.jpeg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
       "name": "Blazer",
       "picture": "assets/images/m1.jpeg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
-      "old_price": 120,
-      "price": 85,
-    },
-    {
-      "name": "Blazer",
-      "picture": "assets/images/m2.jpg",
       "old_price": 120,
       "price": 85,
     },
@@ -99,6 +93,7 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),

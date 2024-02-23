@@ -141,10 +141,7 @@ class MyApp extends StatelessWidget {
             padding: EdgeInsets.only(left: 20, top: 15),
             child: Text('Recent Products'),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Products(),
-          )
+          Products()
         ]),
       ),
     );
