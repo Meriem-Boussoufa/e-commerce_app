@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/components/horizontal_list.dart';
+import 'package:e_commerce_app/pages/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
                 color: Colors.white,
               )),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Cart()));
+              },
               icon: const Icon(
                 Icons.shopping_cart,
                 color: Colors.white,

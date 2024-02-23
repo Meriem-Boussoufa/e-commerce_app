@@ -125,54 +125,52 @@ class SingleProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Hero(
-          tag: productName,
-          child: Material(
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductDetails(
-                            productDetailName: productName,
-                            productDetailNewPrice: productPrice,
-                            productDetailOldPrice: productOldPrice,
-                            productDetailPicture: productPicture,
-                          )),
-                );
-              },
-              child: GridTile(
-                  footer: Container(
-                    color: Colors.white70,
-                    child: ListTile(
-                      leading: Text(
-                        productName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      title: Text(
-                        "\$$productPrice",
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      subtitle: Text(
-                        productOldPrice.toString(),
-                        style: const TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w800,
-                            decoration: TextDecoration.lineThrough),
-                      ),
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProductDetails(
+                        productDetailName: productName,
+                        productDetailNewPrice: productPrice,
+                        productDetailOldPrice: productOldPrice,
+                        productDetailPicture: productPicture,
+                      )),
+            );
+          },
+          child: GridTile(
+              footer: Container(
+                color: Colors.white70,
+                child: ListTile(
+                  leading: Text(
+                    productName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: Image.asset(
-                    productPicture,
-                    fit: BoxFit.cover,
-                  )),
-            ),
-          )),
+                  title: Text(
+                    "\$$productPrice",
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  subtitle: Text(
+                    productOldPrice.toString(),
+                    style: const TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w800,
+                        decoration: TextDecoration.lineThrough),
+                  ),
+                ),
+              ),
+              child: Image.asset(
+                productPicture,
+                fit: BoxFit.cover,
+              )),
+        ),
+      ),
     );
   }
 }
