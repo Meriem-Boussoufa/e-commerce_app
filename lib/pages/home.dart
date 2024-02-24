@@ -27,8 +27,8 @@ class Home extends StatelessWidget {
               )),
           IconButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Cart()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Cart()));
               },
               icon: const Icon(
                 Icons.shopping_cart,
@@ -138,7 +138,7 @@ class Home extends StatelessWidget {
             padding: EdgeInsets.only(left: 20, top: 15),
             child: Text('Recent Products'),
           ),
-          Products()
+          const Products()
         ]),
       ),
     );

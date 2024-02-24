@@ -1,96 +1,26 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_app/pages/home.dart';
-import 'package:e_commerce_app/pages/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
+  TextEditingController name = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
+  String? gender;
+
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  SharedPreferences? preferences;
+
   bool loading = false;
-  bool isLoggedin = false;
-
-  @override
-  void initState() {
-    super.initState();
-    isSignedIn();
-  }
-
-  void isSignedIn() async {
-    setState(() {
-      loading = true;
-    });
-
-    preferences = await SharedPreferences.getInstance();
-    isLoggedin = await googleSignIn.isSignedIn();
-
-    if (isLoggedin == true) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Home()));
-    }
-    setState(() {
-      loading = false;
-    });
-  }
-
-  Future handleSignIn() async {
-    preferences = await SharedPreferences.getInstance();
-    setState(() {
-      loading = true;
-    });
-    GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-    GoogleSignInAuthentication googleSignInAuthentication =
-        await googleUser!.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleSignInAuthentication.idToken,
-        accessToken: googleSignInAuthentication.accessToken);
-
-    UserCredential userCredential =
-        await firebaseAuth.signInWithCredential(credential);
-    User? user = userCredential.user;
-    if (user != null) {
-      final QuerySnapshot result = await FirebaseFirestore.instance
-          .collection("users")
-          .where("id", isEqualTo: user.uid)
-          .get();
-      final List<DocumentSnapshot> documents = result.docs;
-      if (documents.isEmpty) {
-        FirebaseFirestore.instance.collection("users").doc(user.uid).set({
-          "id": user.uid,
-          "username": user.displayName,
-          "profilePicture": user.photoURL,
-        });
-        await preferences!.setString("id", user.uid);
-        await preferences!.setString("username", user.displayName!);
-        await preferences!.setString("profilePicture", user.photoURL!);
-      } else {
-        await preferences!.setString("id", documents[0]["id"]);
-        await preferences!.setString("username", documents[0]["username"]);
-        await preferences!
-            .setString("profilePicture", documents[0]["profilePicture"]);
-      }
-      Fluttertoast.showToast(msg: "Login was successful");
-      setState(() {
-        loading = false;
-      });
-    } else {}
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +56,30 @@ class _LoginState extends State<Login> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Material(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white.withOpacity(0.8),
+                          elevation: 0.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                hintText: "Full Name",
+                                icon: Icon(Icons.person_outline),
+                              ),
+                              controller: name,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "The name field cannot be empty";
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Material(
@@ -174,10 +128,31 @@ class _LoginState extends State<Login> {
                               controller: password,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "The password field cannot be empty";
+                                  return "The password field cannot be emepty";
                                 } else if (value.length < 6) {
                                   return "The Password has to be at least 6 characters long";
                                 }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Material(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white.withOpacity(0.8),
+                          elevation: 0.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                hintText: "Confirm Password",
+                                icon: Icon(Icons.lock_outline),
+                              ),
+                              controller: confirmPassword,
+                              validator: (value) {
                                 return null;
                               },
                             ),
@@ -191,10 +166,12 @@ class _LoginState extends State<Login> {
                             color: Colors.blue,
                             elevation: 0.0,
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                               minWidth: MediaQuery.of(context).size.width,
                               child: const Text(
-                                "Login",
+                                "Sign Up",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,
@@ -211,32 +188,6 @@ class _LoginState extends State<Login> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SignUp()));
-                          },
-                          child: RichText(
-                              text: const TextSpan(
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16.0,
-                                  ),
-                                  children: [
-                                TextSpan(
-                                    text:
-                                        "Dont't have an account ? Click Here to "),
-                                TextSpan(
-                                    text: "Sign up !",
-                                    style: TextStyle(color: Colors.red)),
-                              ])),
-                        ),
-                      )
                     ],
                   )),
             ),
@@ -251,24 +202,6 @@ class _LoginState extends State<Login> {
                 ),
               ))
         ]),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: MaterialButton(
-          shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(30.0), // Adjust the value as needed
-          ),
-          color: Colors.red.shade900,
-          onPressed: handleSignIn,
-          child: const Padding(
-            padding: EdgeInsets.all(15),
-            child: Text(
-              'Sign in / Sign up with google',
-              style: TextStyle(color: Colors.white, fontSize: 15),
-            ),
-          ),
-        ),
       ),
     );
   }

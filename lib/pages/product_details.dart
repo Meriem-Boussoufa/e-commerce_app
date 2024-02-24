@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ProductDetails extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final productDetailName;
+  // ignore: prefer_typing_uninitialized_variables
   final productDetailNewPrice;
+  // ignore: prefer_typing_uninitialized_variables
   final productDetailOldPrice;
+  // ignore: prefer_typing_uninitialized_variables
   final productDetailPicture;
 
   const ProductDetails(

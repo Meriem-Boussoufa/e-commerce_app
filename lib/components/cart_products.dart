@@ -48,12 +48,19 @@ class _CartProductsState extends State<CartProducts> {
 }
 
 class SingleCartProducts extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final productName;
+  // ignore: prefer_typing_uninitialized_variables
   final productPicture;
+  // ignore: prefer_typing_uninitialized_variables
   final productOldPrice;
+  // ignore: prefer_typing_uninitialized_variables
   final productPrice;
+  // ignore: prefer_typing_uninitialized_variables
   final productSize;
+  // ignore: prefer_typing_uninitialized_variables
   final productColor;
+  // ignore: prefer_typing_uninitialized_variables
   final productQuantity;
 
   const SingleCartProducts(

@@ -28,7 +28,7 @@ class _CartState extends State<Cart> {
               )),
         ],
       ),
-      body: CartProducts(),
+      body: const CartProducts(),
       bottomNavigationBar: Container(
         color: Colors.white,
         child: Row(children: [
