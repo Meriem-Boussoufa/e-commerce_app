@@ -1,6 +1,11 @@
+import 'dart:developer';
+
+import 'package:e_commerce_app/db/users_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -10,6 +15,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  UserServices _userServices = UserServices();
+
   final _formKey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController name = TextEditingController();
@@ -22,6 +29,8 @@ class _SignUpState extends State<SignUp> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   bool loading = false;
+
+  bool hidePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +78,7 @@ class _SignUpState extends State<SignUp> {
                               decoration: const InputDecoration(
                                 hintText: "Full Name",
                                 icon: Icon(Icons.person_outline),
+                                border: InputBorder.none,
                               ),
                               controller: name,
                               validator: (value) {
@@ -98,11 +108,7 @@ class _SignUpState extends State<SignUp> {
                                       value: "male",
                                       groupValue: groupValue,
                                       onChanged: (e) {
-                                        if (e == "male") {
-                                          groupValue = e;
-                                        } else if (e == "female") {
-                                          groupValue = e;
-                                        }
+                                        valueChanged(e);
                                       }),
                                 ),
                               ),
@@ -117,11 +123,7 @@ class _SignUpState extends State<SignUp> {
                                       value: "male",
                                       groupValue: groupValue,
                                       onChanged: (e) {
-                                        if (e == "male") {
-                                          groupValue = e;
-                                        } else if (e == "female") {
-                                          groupValue = e;
-                                        }
+                                        valueChanged(e);
                                       }),
                                 ),
                               ),
@@ -141,6 +143,7 @@ class _SignUpState extends State<SignUp> {
                               decoration: const InputDecoration(
                                 hintText: "Email",
                                 icon: Icon(Icons.email),
+                                border: InputBorder.none,
                               ),
                               keyboardType: TextInputType.emailAddress,
                               controller: email,
@@ -169,20 +172,31 @@ class _SignUpState extends State<SignUp> {
                           elevation: 0.0,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12.0),
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                hintText: "Password",
-                                icon: Icon(Icons.lock_outline),
+                            child: ListTile(
+                              title: TextFormField(
+                                decoration: const InputDecoration(
+                                  hintText: "Password",
+                                  icon: Icon(Icons.lock_outline),
+                                  border: InputBorder.none,
+                                ),
+                                controller: password,
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "The password field cannot be emepty";
+                                  } else if (value.length < 6) {
+                                    return "The Password has to be at least 6 characters long";
+                                  }
+                                  return null;
+                                },
                               ),
-                              controller: password,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "The password field cannot be emepty";
-                                } else if (value.length < 6) {
-                                  return "The Password has to be at least 6 characters long";
-                                }
-                                return null;
-                              },
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      hidePassword = false;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.remove_red_eye)),
                             ),
                           ),
                         ),
@@ -195,15 +209,29 @@ class _SignUpState extends State<SignUp> {
                           elevation: 0.0,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12.0),
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                hintText: "Confirm Password",
-                                icon: Icon(Icons.lock_outline),
+                            child: ListTile(
+                              title: TextFormField(
+                                decoration: const InputDecoration(
+                                  hintText: "Confirm Password",
+                                  icon: Icon(Icons.lock_outline),
+                                  border: InputBorder.none,
+                                ),
+                                controller: confirmPassword,
+                                obscureText: true,
+                                validator: (value) {
+                                  if (password.text != value) {
+                                    return "The passwords do not match";
+                                  }
+                                  return null;
+                                },
                               ),
-                              controller: confirmPassword,
-                              validator: (value) {
-                                return null;
-                              },
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      hidePassword = false;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.remove_red_eye)),
                             ),
                           ),
                         ),
@@ -215,8 +243,8 @@ class _SignUpState extends State<SignUp> {
                             color: Colors.blue,
                             elevation: 0.0,
                             child: MaterialButton(
-                              onPressed: () {
-                                Navigator.pop(context);
+                              onPressed: () async {
+                                validateForm();
                               },
                               minWidth: MediaQuery.of(context).size.width,
                               child: const Text(
@@ -253,5 +281,49 @@ class _SignUpState extends State<SignUp> {
         ]),
       ),
     );
+  }
+
+  valueChanged(e) {
+    if (e == "male") {
+      groupValue = e;
+      gender = e;
+    } else if (e == "female") {
+      groupValue = e;
+      gender = e;
+    }
+  }
+
+  Future<void> validateForm() async {
+    FormState? formState = _formKey.currentState;
+    Map? value;
+    if (formState!.validate()) {
+      formState.reset();
+      User? user = firebaseAuth.currentUser!;
+
+      if (user == null) {
+        firebaseAuth
+            .createUserWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+        )
+            .then((userCredential) {
+          User? newUser = userCredential.user;
+          if (newUser != null) {
+            value = {
+              "username": name.text,
+              "email": email.text,
+              "userId": newUser.uid,
+              "gender": gender,
+            };
+            _userServices.createUser(value!);
+          }
+          // ignore: invalid_return_type_for_catch_error
+        }).catchError((err) => {
+                  log(err.toString()),
+                });
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const Home()));
+      }
+    }
   }
 }
