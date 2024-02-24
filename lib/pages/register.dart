@@ -23,7 +23,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   String? gender;
-  String? groupValue = "male";
+  String? groupValue = "";
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -36,36 +36,41 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(children: [
-          Image.asset(
-            'assets/images/back.jpg',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 150),
-            child: Container(
-              alignment: Alignment.topCenter,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 800,
               child: Image.asset(
-                'assets/images/logo.png',
-                width: 150,
-                height: 150,
+                'assets/images/back.jpg',
+                fit: BoxFit.cover,
               ),
             ),
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.4),
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 300.0),
-            child: Center(
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
+            Container(
+              color: Colors.black.withOpacity(0.3),
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 110),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        width: 180,
+                        height: 180,
+                      ),
+                    ),
+                  ),
+                  Center(
+                      child: Form(
+                    key: _formKey,
+                    child: Column(children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Material(
@@ -77,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                             child: TextFormField(
                               decoration: const InputDecoration(
                                 hintText: "Full Name",
-                                icon: Icon(Icons.person_outline),
+                                prefixIcon: Icon(Icons.person_outline),
                                 border: InputBorder.none,
                               ),
                               controller: name,
@@ -94,17 +99,18 @@ class _SignUpState extends State<SignUp> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          color: Colors.white.withOpacity(0.4),
+                          color: Colors.white.withOpacity(0.3),
                           child: Row(
                             children: [
                               Expanded(
                                 child: ListTile(
                                   title: const Text(
-                                    "male",
+                                    "Male",
                                     style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.end,
                                   ),
                                   trailing: Radio(
+                                      activeColor: Colors.red,
                                       value: "male",
                                       groupValue: groupValue,
                                       onChanged: (e) {
@@ -115,12 +121,13 @@ class _SignUpState extends State<SignUp> {
                               Expanded(
                                 child: ListTile(
                                   title: const Text(
-                                    "female",
+                                    "Female",
                                     style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.end,
                                   ),
                                   trailing: Radio(
-                                      value: "male",
+                                      activeColor: Colors.red,
+                                      value: "female",
                                       groupValue: groupValue,
                                       onChanged: (e) {
                                         valueChanged(e);
@@ -142,7 +149,7 @@ class _SignUpState extends State<SignUp> {
                             child: TextFormField(
                               decoration: const InputDecoration(
                                 hintText: "Email",
-                                icon: Icon(Icons.email),
+                                prefixIcon: Icon(Icons.email),
                                 border: InputBorder.none,
                               ),
                               keyboardType: TextInputType.emailAddress,
@@ -172,31 +179,39 @@ class _SignUpState extends State<SignUp> {
                           elevation: 0.0,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12.0),
-                            child: ListTile(
-                              title: TextFormField(
-                                decoration: const InputDecoration(
-                                  hintText: "Password",
-                                  icon: Icon(Icons.lock_outline),
-                                  border: InputBorder.none,
-                                ),
-                                controller: password,
-                                obscureText: true,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "The password field cannot be emepty";
-                                  } else if (value.length < 6) {
-                                    return "The Password has to be at least 6 characters long";
-                                  }
-                                  return null;
-                                },
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                                prefixIcon: const Icon(Icons.lock_outline),
+                                suffixIcon: hidePassword
+                                    ? IconButton(
+                                        icon: const Icon(Icons.visibility_off),
+                                        onPressed: () {
+                                          setState(() {
+                                            hidePassword = false;
+                                          });
+                                        },
+                                      )
+                                    : IconButton(
+                                        icon: const Icon(Icons.visibility),
+                                        onPressed: () {
+                                          setState(() {
+                                            hidePassword = true;
+                                          });
+                                        },
+                                      ),
+                                border: InputBorder.none,
                               ),
-                              trailing: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      hidePassword = false;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.remove_red_eye)),
+                              controller: password,
+                              obscureText: hidePassword,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "The password field cannot be emepty";
+                                } else if (value.length < 6) {
+                                  return "The Password has to be at least 6 characters long";
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ),
@@ -209,38 +224,47 @@ class _SignUpState extends State<SignUp> {
                           elevation: 0.0,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12.0),
-                            child: ListTile(
-                              title: TextFormField(
-                                decoration: const InputDecoration(
-                                  hintText: "Confirm Password",
-                                  icon: Icon(Icons.lock_outline),
-                                  border: InputBorder.none,
-                                ),
-                                controller: confirmPassword,
-                                obscureText: true,
-                                validator: (value) {
-                                  if (password.text != value) {
-                                    return "The passwords do not match";
-                                  }
-                                  return null;
-                                },
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Confirm Password",
+                                prefixIcon: const Icon(Icons.lock_outline),
+                                suffixIcon: hidePassword
+                                    ? IconButton(
+                                        icon: const Icon(Icons.visibility_off),
+                                        onPressed: () {
+                                          setState(() {
+                                            hidePassword = false;
+                                          });
+                                        },
+                                      )
+                                    : IconButton(
+                                        icon: const Icon(Icons.visibility),
+                                        onPressed: () {
+                                          setState(() {
+                                            hidePassword = true;
+                                          });
+                                        },
+                                      ),
+                                border: InputBorder.none,
                               ),
-                              trailing: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      hidePassword = false;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.remove_red_eye)),
+                              controller: confirmPassword,
+                              obscureText: hidePassword,
+                              validator: (value) {
+                                if (password.text != value) {
+                                  return "The passwords do not match";
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ),
                       ),
+                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.blue,
+                            color: Colors.white,
                             elevation: 0.0,
                             child: MaterialButton(
                               onPressed: () async {
@@ -251,7 +275,7 @@ class _SignUpState extends State<SignUp> {
                                 "Sign Up",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.red,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),
@@ -265,11 +289,12 @@ class _SignUpState extends State<SignUp> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                    ],
-                  )),
+                    ]),
+                  ))
+                ],
+              ),
             ),
-          ),
-          Visibility(
+            Visibility(
               visible: loading,
               child: Container(
                 alignment: Alignment.center,
@@ -277,20 +302,18 @@ class _SignUpState extends State<SignUp> {
                 child: const CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
                 ),
-              ))
-        ]),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
   valueChanged(e) {
-    if (e == "male") {
+    setState(() {
       groupValue = e;
-      gender = e;
-    } else if (e == "female") {
-      groupValue = e;
-      gender = e;
-    }
+    });
   }
 
   Future<void> validateForm() async {
