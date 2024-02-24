@@ -16,6 +16,7 @@ dependencies:
   fluttertoast: ^8.2.4
   google_sign_in: ^6.2.1
   shared_preferences: ^2.2.2
+  firebase_core: ^2.25.4
 
 dev_dependencies:
   flutter_test:
@@ -45,7 +46,7 @@ flutter:
     - assets/images/pant3.jpg
     - assets/images/shoe1.jpeg
     - assets/images/shoe2.jpeg
-
+    - assets/images/back.jpg
   # fonts:
   #   - family: Schyler
   #     fonts:
