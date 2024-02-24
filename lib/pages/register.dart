@@ -346,7 +346,7 @@ class _SignUpState extends State<SignUp> {
                   log(err.toString()),
                 });
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Home()));
+            context, MaterialPageRoute(builder: (context) => Home()));
       }
     }
   }

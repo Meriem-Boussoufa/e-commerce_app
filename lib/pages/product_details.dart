@@ -27,7 +27,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red.shade900,
         title: const Text(
           "E-Commerce App",
           style: TextStyle(color: Colors.white),
@@ -74,8 +74,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Expanded(
                           child: Text(
                         "\$${widget.productDetailNewPrice}",
-                        style: const TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.red.shade900,
+                            fontWeight: FontWeight.bold),
                       ))
                     ],
                   ),
@@ -182,7 +183,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               Expanded(
                 child: MaterialButton(
                   onPressed: () {},
-                  color: Colors.red,
+                  color: Colors.red.shade900,
                   textColor: Colors.white,
                   elevation: 0.2,
                   child: const Text("Buy Now"),
@@ -191,12 +192,12 @@ class _ProductDetailsState extends State<ProductDetails> {
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.add_shopping_cart),
-                color: Colors.red,
+                color: Colors.red.shade900,
               ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.favorite_border),
-                color: Colors.red,
+                color: Colors.red.shade900,
               ),
             ],
           ),

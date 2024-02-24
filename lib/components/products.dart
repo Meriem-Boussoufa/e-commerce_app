@@ -153,8 +153,8 @@ class SingleProduct extends StatelessWidget {
                   ),
                   title: Text(
                     "\$$productPrice",
-                    style: const TextStyle(
-                      color: Colors.red,
+                    style: TextStyle(
+                      color: Colors.red.shade900,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

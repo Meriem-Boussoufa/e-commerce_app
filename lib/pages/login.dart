@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
 
     if (isLoggedin == true) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Home()));
+          context, MaterialPageRoute(builder: (context) => Home()));
     }
     setState(() {
       loading = false;
@@ -86,6 +86,8 @@ class _LoginState extends State<Login> {
         await preferences!.setString("id", user.uid);
         await preferences!.setString("username", user.displayName!);
         await preferences!.setString("profilePicture", user.photoURL!);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Home()));
       } else {
         await preferences!.setString("id", documents[0]["id"]);
         await preferences!.setString("username", documents[0]["username"]);

@@ -14,7 +14,7 @@ class _CartState extends State<Cart> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red.shade900,
         title: const Text(
           "Cart",
           style: TextStyle(color: Colors.white),
@@ -43,7 +43,7 @@ class _CartState extends State<Cart> {
             child: Expanded(
                 child: MaterialButton(
               onPressed: () {},
-              color: Colors.red,
+              color: Colors.red.shade900,
               child: const Text(
                 "Check out",
                 style: TextStyle(color: Colors.white),
