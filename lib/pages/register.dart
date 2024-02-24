@@ -15,7 +15,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  UserServices _userServices = UserServices();
+  final UserServices _userServices = UserServices();
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
@@ -300,6 +300,7 @@ class _SignUpState extends State<SignUp> {
       formState.reset();
       User? user = firebaseAuth.currentUser!;
 
+      // ignore: unnecessary_null_comparison
       if (user == null) {
         firebaseAuth
             .createUserWithEmailAndPassword(
