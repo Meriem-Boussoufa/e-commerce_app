@@ -16,6 +16,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   String? gender;
+  String? groupValue = "male";
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -77,6 +78,54 @@ class _SignUpState extends State<SignUp> {
                                 return null;
                               },
                             ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          color: Colors.white.withOpacity(0.4),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ListTile(
+                                  title: const Text(
+                                    "male",
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                  trailing: Radio(
+                                      value: "male",
+                                      groupValue: groupValue,
+                                      onChanged: (e) {
+                                        if (e == "male") {
+                                          groupValue = e;
+                                        } else if (e == "female") {
+                                          groupValue = e;
+                                        }
+                                      }),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  title: const Text(
+                                    "female",
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                  trailing: Radio(
+                                      value: "male",
+                                      groupValue: groupValue,
+                                      onChanged: (e) {
+                                        if (e == "male") {
+                                          groupValue = e;
+                                        } else if (e == "female") {
+                                          groupValue = e;
+                                        }
+                                      }),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
